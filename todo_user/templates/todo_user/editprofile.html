@@ -23,8 +23,8 @@
     
         {{ form.as_p }}
 
-        <input type="submit" value="Edit Profile" class="btn btn-secondary">
-        <p><small><a href="{% url 'change_password' %"}>Click Here</a> to Change Your Password</small></p>
+        <input type="submit" value="Submit Changes" class="btn btn-secondary">
+        <a href="{% url 'change_password' %}" class="btn btn-secondary">Change Password</a>
     </form>
 </div>
 {% endblock %}
