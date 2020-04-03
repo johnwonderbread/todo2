@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import List
+from .models import List, ToDoList, Item
 from .forms import ListForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -24,6 +24,33 @@ def home(request):
 		else:
 			all_items = List.objects.all 
 			return render(request, 'todo_list/home.html', {'all_items': all_items})
+
+def tdlist(request):
+	todo_listing = []
+
+	if not request.user.is_authenticated:
+		return redirect('login')
+	else: 
+		for todo_list in Item.objects.all():
+			todo_dict = {}
+			todo_dict['list_object'] = todo_list
+			todo_listing.append(todo_dict)
+	return render(request, 'todo_list/todolist.html', { 'todo_listing': todo_listing })
+
+def status_report(request): 
+	todo_listing = []  
+
+	if not request.user.is_authenticated:
+		return redirect('login')
+	else:
+		for todo_list in ToDoList.objects.all():  
+			todo_dict = {}  
+			todo_dict['list_object'] = todo_list  
+			todo_dict['item_count'] = todo_list.item_set.count()  
+			todo_dict['items_complete'] = todo_list.item_set.filter(completed=True).count()  
+			todo_dict['percent_complete'] = int(float(todo_dict['items_complete']) / todo_dict['item_count'] * 100)  
+			todo_listing.append(todo_dict)  
+		return render(request, 'todo_list/statusreport.html', { 'todo_listing': todo_listing })
 
 def about(request):
 	context = {'first_name': 'John', 'last_name': 'Tyler'}
