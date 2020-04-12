@@ -22,9 +22,10 @@ Do More Shit.
 
 <form class="form-inline my-2 my-lg-0" method="POST">
     {% csrf_token %}
-    <input class="form-control mr-sm-2" type="text" name="item">
+    <input class="form-control mr-sm-2" type="text" name="item" placeholder="Task">
     <input class="form-control mr-sm-2" type="date" name="duedate">
     <select name="priority" class="form-control mr-sm-2">
+        <option value="">Choose Priority</option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
@@ -39,7 +40,7 @@ Do More Shit.
             <th>Task</th>
             <th>Due Date</th>
             <th>Priority</th>
-            <th>Status</th>
+            <th>Actions</th>
         </tr>
         {% for things in all_items %}
             {% if things.user != request.user %}
@@ -52,11 +53,6 @@ Do More Shit.
                     {% endif %}
                     <td>{{ things.duedate }}</td>
                     <td>{{ things.priority }}</td>
-                    {% if things.completed %}
-                        <td bgcolor="teal">{{ things.completed|yesno:"Completed,Incomplete"}}</td>
-                    {% else %}
-                        <td>{{ things.completed|yesno:"Completed,Incomplete" }}</td>
-                    {% endif %}
                     <td>
                         {% if things.completed %}
                         <a href="{% url 'uncross_off' things.id %}"">
