@@ -17,13 +17,15 @@ def home(request):
 				fs=form.save(commit=False)
 				fs.user=request.user
 				fs.save()
-				context={'form':form, 'all_items':List.objects.all}
+				context={'form':form, 'all_items':List.objects.all()}
 				messages.success(request, ('Item has been successfully added to the list!'))
 				return render(request, 'todo_list/home.html', context)
 		
 		else:
-			all_items = List.objects.all 
-			return render(request, 'todo_list/home.html', {'all_items': all_items})
+			form = ListForm()
+			all_items = List.objects.all()
+			context = {'form':form, 'all_items':all_items}
+			return render(request, 'todo_list/home.html', context)
 
 def about(request):
 	context = {'first_name': 'John', 'last_name': 'Tyler'}
